@@ -33,6 +33,7 @@ export const TableClients = ({ state, loadClientsData }) => {
           rowData={state.clientes ? state.clientes : []}
           columnDefs={state.columnData}
           defaultColDef={defaultColDef}
+          onRowClicked={(e) => console.log(e)}
         />
       </div>
     </div>
