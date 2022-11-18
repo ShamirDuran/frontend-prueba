@@ -8,8 +8,16 @@ export const AgregarClienteBtn = ({ setOpenModal }) => {
   };
 
   return (
-    <Button variant="outlined" color="success" startIcon={<AddCircleOutlineIcon />} onClick={toggleModal}>
-      REGISTRAR
-    </Button>
+    <div className="right-align">
+      <Button
+        variant="outlined"
+        color="success"
+        startIcon={<AddCircleOutlineIcon />}
+        onClick={toggleModal}
+        className="btn-registrar"
+      >
+        REGISTRAR
+      </Button>
+    </div>
   );
 };

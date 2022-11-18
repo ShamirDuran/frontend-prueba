@@ -27,3 +27,17 @@
 .close-icon:hover {
   color: #1976d2;
 }
+
+.app-title {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.right-align {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-registrar {
+  margin-top: 15px !important;
+}

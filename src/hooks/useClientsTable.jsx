@@ -11,18 +11,22 @@ export const useClientsTable = () => {
       { field: "direccion" },
       { field: "telefono" },
       { field: "correo_electronico" },
-      { field: "ciudad" },
+      { field: "ciudad", floatingFilter: true, filter: "agSetColumnFilter" },
       { field: "valor_cupo" },
-      { field: "estado" },
-      { field: "condicion_pago_id" },
-      { field: "medio_pago_id" },
+      { field: "estado", floatingFilter: true },
+      { field: "condicion_pago_id", floatingFilter: true },
+      { field: "medio_pago_id", floatingFilter: true },
     ],
   });
 
   const loadClientsData = () => {
-    customAxios("servicios_clientes/select_clientes.php").then((resp) =>
-      setState((prev) => ({ ...prev, clientes: [...resp.data] }))
-    );
+    customAxios("servicios_clientes/select_clientes.php").then((resp) => {
+      if (resp.error === true) {
+        return {};
+      }
+
+      return setState((prev) => ({ ...prev, clientes: [...resp.data] }));
+    });
   };
 
   return { state, setState, loadClientsData };
