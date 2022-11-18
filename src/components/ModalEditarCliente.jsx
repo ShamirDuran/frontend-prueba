@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Swal from "sweetalert2";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,15 +8,17 @@ import { customAxios } from "../hooks/useAxios";
 import { useForm } from "../hooks/useForm";
 import { Button, Container, Dialog, Grid, useTheme } from "@mui/material";
 import { BuildFormComponents } from "./BuildFormComponents";
+import { ModalsContext } from "../App";
 
-export const ModalEditarCliente = ({ initialState, loadClientsData, open, extraData, toggleModal }) => {
+export const ModalEditarCliente = ({ loadClientsData, extraData }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const { editMotalState, setEditMotalState } = useContext(ModalsContext);
 
-  const [values, handleInputChange, reset] = useForm(initialState);
+  const [values, handleInputChange, reset, setFormValues] = useForm();
 
-  const registerNewUser = async () => {
-    const { data } = await customAxios("servicios_clientes/crear_cliente.php", values, "POST");
+  const modificarCliente = async () => {
+    const { data } = await customAxios("servicios_clientes/actualizar_cliente.php", values, "POST");
 
     if (data.error) {
       Swal.fire({
@@ -36,21 +38,26 @@ export const ModalEditarCliente = ({ initialState, loadClientsData, open, extraD
     }
   };
 
+  useEffect(() => {
+    setFormValues(editMotalState.initialState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editMotalState]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    registerNewUser();
+    modificarCliente();
     closeModal();
     reset();
   };
 
   const closeModal = () => {
-    toggleModal((prev) => !prev);
+    setEditMotalState((prev) => ({ ...prev, isOpen: false }));
   };
 
   return (
-    <Dialog fullScreen={fullScreen} open={open} style={{ padding: "10" }}>
+    <Dialog fullScreen={fullScreen} open={editMotalState.isOpen} style={{ padding: "10" }}>
       <Container>
-        <h1 className="form-title">Registrar cliente</h1>
+        <h1 className="form-title">Modificar cliente</h1>
 
         <span className="close-icon" onClick={closeModal}>
           <CloseIcon />
@@ -72,7 +79,7 @@ export const ModalEditarCliente = ({ initialState, loadClientsData, open, extraD
             <Grid item xs={6} />
             <Grid item xs={6} className="flex-grid">
               <Button variant="contained" type="submit" className="btn-submit">
-                Guardar
+                Modificar
               </Button>
             </Grid>
           </Grid>
